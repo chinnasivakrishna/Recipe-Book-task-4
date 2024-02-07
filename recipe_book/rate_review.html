@@ -85,6 +85,7 @@
             var name = document.getElementById("name").value;
             var rating = document.getElementById("rating").value;
             var review = document.getElementById("review").value;
+            const userEmail = sessionStorage.getItem('email');
             
             const urlParams = new URLSearchParams(window.location.search);
             const recipeId = urlParams.get('recipeId');
@@ -93,7 +94,8 @@
                 recipeId: recipeId,
                 name:name,
                 rating: rating,
-                review: review
+                review: review,
+                userEmail:userEmail
             };
     
             let ratingsAndReviews = JSON.parse(localStorage.getItem('ratingsAndReviews')) || [];
