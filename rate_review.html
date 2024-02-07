@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate and Review Recipe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Rate and Review Recipe</h2>
+        <form id="rateReviewForm">
+            <label for="rating">Rating (out of 5)</label>
+            <input type="number" id="rating" name="rating" min="1" max="5" required>
+
+            <label for="review">Review</label>
+            <textarea id="review" name="review" rows="4" required></textarea>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("rateReviewForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+    
+            // Get form values
+            var rating = document.getElementById("rating").value;
+            var review = document.getElementById("review").value;
+    
+            // Get the recipe ID from the URL query string
+            const urlParams = new URLSearchParams(window.location.search);
+            const recipeId = urlParams.get('recipeId');
+    
+            // Create an object to store the rating and review
+            var ratingAndReview = {
+                recipeId: recipeId,
+                rating: rating,
+                review: review
+            };
+    
+            // Retrieve existing ratings and reviews or initialize an empty array
+            let ratingsAndReviews = JSON.parse(localStorage.getItem('ratingsAndReviews')) || [];
+            // Add the new rating and review
+            ratingsAndReviews.push(ratingAndReview);
+            // Store the updated ratings and reviews in local storage
+            localStorage.setItem('ratingsAndReviews', JSON.stringify(ratingsAndReviews));
+    
+            // Show confirmation message
+            alert("Thank you for your rating and review!");
+    
+            // Redirect to the recipe detail page for the specific recipe
+            window.location.href = `display_recipes.html?recipeId=${recipeId}`;
+        });
+    </script>
+    
+</body>
+</html>

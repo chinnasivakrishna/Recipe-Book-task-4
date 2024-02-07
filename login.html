@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required autocomplete="email">
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required autocomplete="current-password">
+
+            <input type="submit" value="Login">
+        </form>
+        <div id="error" class="error" style="display: none;"></div>
+        <p>Create New Account</p><a href="registration.html">Click here</a>
+    </div>
+
+    <script>
+        // Function to handle form submission
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get form values
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+
+            // Iterate through local storage to find a matching email
+            var found = false;
+            for (var key in localStorage) {
+                if (localStorage.hasOwnProperty(key)) {
+                    var storedData = localStorage.getItem(key);
+                    console.log("Key:", key, "Value:", storedData);
+                    try {
+                        var parsedData = JSON.parse(storedData);
+                        if (parsedData.email === email) {
+                            // Matching email found
+                            found = true;
+                            // Check if password matches
+                            if (parsedData.password === password) {
+                                // Password matches, user is authenticated
+                                sessionStorage.setItem("username", parsedData.username);
+                                sessionStorage.setItem("email", email);
+                                window.location.href = "index.html"; // Redirect to recipes page
+                                return; // Exit the loop since we found a match
+                            } else {
+                                // Password doesn't match
+                                document.getElementById("error").innerText = "Invalid password!";
+                                document.getElementById("error").style.display = "block";
+                                return; // Exit the loop since we found a match
+                            }
+                        }
+                    } catch (error) {
+                        console.error("Error parsing JSON:", error);
+                    }
+                }
+            }
+
+            // If the loop completes and no matching email is found
+            if (!found) {
+                document.getElementById("error").innerText = "Email not found!";
+                document.getElementById("error").style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>
