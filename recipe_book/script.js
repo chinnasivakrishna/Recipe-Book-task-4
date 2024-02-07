@@ -282,15 +282,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function handleRate(event) {
         const recipeId = parseInt(event.target.dataset.id);
-        const ratingsAndReviews = JSON.parse(localStorage.getItem('ratingsAndReviews')) || [];
-
-        const userRating = ratingsAndReviews.find(item => item.recipeId === recipeId.toString());
+        const userEmail = sessionStorage.getItem('email');
+        let ratingsAndReviews = JSON.parse(localStorage.getItem('ratingsAndReviews')) || [];
+        
+        // Check if the user has already rated the recipe
+        const userRating = ratingsAndReviews.find(item => item.recipeId === recipeId.toString() && item.userEmail === userEmail);
         if (userRating) {
             alert('You have already rated this recipe.');
             return;
         }
-
+    
         console.log('Rate button clicked for Recipe ID:', recipeId);
+        // Proceed to the rate review page for the recipe
         window.location.href = `rate_review.html?recipeId=${recipeId}`;
     }
 
