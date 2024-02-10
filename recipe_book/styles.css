@@ -39,6 +39,14 @@ body {
   text-decoration: none;
 }
 
+.interaction-buttons {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  background-color: white;
+  z-index: 1000; /* Ensure the button stays above other content */
+}
 .navbar a:hover {
   background-color: #ddd;
   color: black;
